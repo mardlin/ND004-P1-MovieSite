@@ -75,12 +75,6 @@ main_page_head = '''
               'frameborder': 0
             }));
         });
-        // Animate in the movies when the page loads
-        $(document).ready(function () {
-          $('.movie-tile').hide().first().show("fast", function showNext() {
-            $(this).next("div").show("fast", showNext);
-          });
-        });
     </script>
 </head>
 '''
@@ -111,28 +105,51 @@ main_page_content = '''
         <div class="container">
           <div class="navbar-header">
             <a class="navbar-brand" href="#">Fresh Tomatoes Movie Trailers</a>
+            <ul class="nav navbar-nav navbar-right" >
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pick a Movie <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="tablist">
+                  {movie_menu}
+                </ul>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
     <div class="container">
-      {movie_tiles}
+      <div class="tab-content">
+        {movie_tiles}
+      </div>
     </div>
   </body>
 </html>
 '''
 
-# A single movie entry html template
-# This is an other customizable template with placeholders for the attributes of our movie
-movie_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
-    <img src="{poster_image_url}" width="220" height="342">
-    <h2>{movie_title}</h2>
-</div>
+# HTML template for a single menu item in the movie picker
+movie_menu_content = '''
+<li role="presentation"><a href="#{movie_slug}-tab" aria-controls="{movie_slug}-tab" role="tab" data-toggle="tab">{movie_title}</a></li>
+
 '''
 
+# HTML template for a single movie entry w/ placeholders for the attributes of our movie
+movie_tile_content = '''
+        <div role="tabpanel" class="tab-pane container" id="{movie_slug}-tab">
+          <div class="col-lg-6 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer" id="{movie_slug}">
+            <img src="{poster_image_url}" >
+          </div>
+          <div class="col-lg-6 text-center movie-details">
+            <h2>{movie_title}</h2>
+            <h3>{movie_storyline}</h3>
+            <p>{movie_details}</p>
+            <p><a href="{wiki_url}">Learn More</a></p>
+          </div>
+        </div>
+'''
+
+
+# This function builds html for {movie_tiles} with a tab for each movie
 def create_movie_tiles_content(movies):
-    # The HTML content for this section of the page
     content = ''
     # here we'll iterate over the movie objects to build the content for each one
     for movie in movies:
@@ -145,17 +162,37 @@ def create_movie_tiles_content(movies):
         content += movie_tile_content.format(
             movie_title=movie.title,
             poster_image_url=movie.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id
+            trailer_youtube_id=trailer_youtube_id,
+            movie_storyline=movie.storyline,
+            wiki_url=movie.wiki_url,
+            movie_details=movie.details,
+            movie_slug=movie.title.replace(" ","-")
         )
     return content
+    
+# This function builds the html for the dropdown nav
+def create_movie_menu_content(movies):
+  content = ''
+    # here we'll iterate over the movie objects to build the content for each one
+  for movie in movies:
+      content += movie_menu_content.format(
+          movie_title=movie.title,
+          movie_slug=movie.title.replace(" ","-")
+      )
+  return content        
+    
+    
 
 def open_movies_page(movies):
   # Create or overwrite the output file
   output_file = open('fresh_tomatoes.html', 'w')
 
   # Replace the placeholder for the movie tiles with the actual dynamically generated content
-  rendered_content = main_page_content.format(movie_tiles=create_movie_tiles_content(movies))
-
+  rendered_content = main_page_content.format(
+      movie_menu=create_movie_menu_content(movies),
+      movie_tiles=create_movie_tiles_content(movies)
+  )
+  
   # Output the file
   output_file.write(main_page_head + rendered_content)
   output_file.close()
