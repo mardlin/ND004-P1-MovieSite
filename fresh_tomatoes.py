@@ -131,7 +131,7 @@ main_page_content = '''
 </html>
 '''
 
-# HTML template for a single menu item in the movie picker
+# HTML template for a single menu item in the movie picker dropdown
 movie_menu_content = '''
 <li role="presentation"><a href="#{movie_slug}-tab" aria-controls="{movie_slug}-tab" role="tab" data-toggle="tab">{movie_title}</a></li>
 

@@ -1,5 +1,5 @@
-import media #this line imports the file media.py
-import fresh_tomatoes
+import media #imports the file media.py and classes within it
+import fresh_tomatoes #import fresh_tomatoes.py
 
 # Create an obeject instance of the class Movie, from the media module to hold 
 # information about a movie
@@ -28,6 +28,8 @@ the_royal_tenenbaums = media.Movie("The Royal Tenenbaums",
         "Royal Tenenbaum explains to his three children, Chas, Margot, and Richie, that he and his wife, Etheline, are separating. Each of the Tenenbaum children achieved great success at a very young age. Chas is a math and business genius, from whom Royal steals money. Margot, who was adopted by the Tenenbaums, was awarded a grant for a play that she wrote in the ninth grade. Richie is a tennis prodigy and artist. He expresses his love for adopted sister Margot through many paintings. Royal takes him on regular outings, to which neither of the other children are invited. Eli Cash is the Tenenbaums' neighbor, and Richie's best friend.",
         "https://en.wikipedia.org/wiki/The_Royal_Tenenbaums"
         )
-
+#place our Movie instance objects into a list
 movies = [quest_for_fire, training_day, the_royal_tenenbaums]
+
+#generates the fresh tomatoes site for the given movies
 fresh_tomatoes.open_movies_page(movies)
