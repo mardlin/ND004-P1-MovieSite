@@ -77,7 +77,6 @@ main_page_head = '''
         });
         <!--Apply the "active" class to the first menu item and first tab -->
         $( document ).ready(function(){
-            $("#movie-menu > li:first").addClass("active");
             $("#movie-tabs > div:first").addClass("active");
             console.log('ready');
           });
