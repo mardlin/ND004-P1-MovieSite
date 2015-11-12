@@ -75,6 +75,12 @@ main_page_head = '''
               'frameborder': 0
             }));
         });
+        <!--Apply the "active" class to the first menu item and first tab -->
+        $( document ).ready(function(){
+            $("#movie-menu > li:first").addClass("active");
+            $("#movie-tabs > div:first").addClass("active");
+            console.log('ready');
+          });
     </script>
 </head>
 '''
@@ -108,7 +114,7 @@ main_page_content = '''
             <ul class="nav navbar-nav navbar-right" >
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pick a Movie <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="tablist">
+                <ul class="dropdown-menu" id="movie-menu" role="tablist">
                   {movie_menu}
                 </ul>
               </li>
@@ -118,7 +124,7 @@ main_page_content = '''
       </div>
     </div>
     <div class="container">
-      <div class="tab-content">
+      <div class="tab-content" id="movie-tabs">
         {movie_tiles}
       </div>
     </div>
@@ -166,7 +172,7 @@ def create_movie_tiles_content(movies):
             movie_storyline=movie.storyline,
             wiki_url=movie.wiki_url,
             movie_details=movie.details,
-            movie_slug=movie.title.replace(" ","-")
+            movie_slug=movie.slug
         )
     return content
     
@@ -177,7 +183,7 @@ def create_movie_menu_content(movies):
   for movie in movies:
       content += movie_menu_content.format(
           movie_title=movie.title,
-          movie_slug=movie.title.replace(" ","-")
+          movie_slug=movie.slug
       )
   return content        
     

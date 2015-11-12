@@ -12,6 +12,7 @@ class Movie():
         self.trailer_youtube_url = trailer_youtube
         self.details = details
         self.wiki_url = wiki_url
+        self.slug = movie_title.replace(" ","-").lower()
         
         
     def show_trailer(self):
